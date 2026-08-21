@@ -65,66 +65,76 @@ function App() {
 
   return (
     <main>
-      <form className="note-create-form" onSubmit={handleSubmit}>
-        <div className="input-field">
-          <label>title:</label>
-          <input
-            type="text"
-            name="title"
-            id="title"
-            value={title}
-            onChange={(e) => {
-              setTitle(e.target.value);
-            }}
-          />
-        </div>
+  <form className="note-create-form" onSubmit={handleSubmit}>
+    <div className="window-dots">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
 
-        <div className="input-field">
-          <label>description:</label>
-          <textarea
-            name="desc"
-            id="desc"
-            value={desc}
-            onChange={(e) => {
-              setDesc(e.target.value);
-            }}
-          ></textarea>
-        </div>
+    <div className="input-field">
+      <label htmlFor="title">title:</label>
+      <input
+        type="text"
+        name="title"
+        id="title"
+        value={title}
+        onChange={(e) => {
+          setTitle(e.target.value);
+        }}
+      />
+    </div>
 
-        <button type="submit">
-          {editingId === null ? "Create note" : "Update note"}
-        </button>
-      </form>
+    <div className="input-field">
+      <label htmlFor="desc">description:</label>
+      <textarea
+        name="desc"
+        id="desc"
+        value={desc}
+        onChange={(e) => {
+          setDesc(e.target.value);
+        }}
+      ></textarea>
+    </div>
 
-      <div className="notes">
-        {isloading
-          ? "Loading notes..."
-          : notes.map((note) => {
-              return (
-                <div key={note._id} className="note">
-                  <h2>{note.title}</h2>
-                  <p>{note.desc}</p>
-                  <div className="btns">
-                    <button
-                      onClick={() => {
-                        updateNoteHandler(note);
-                      }}
-                    >
-                      edit
-                    </button>
-                    <button
-                      onClick={() => {
-                        deleteNoteHandler(note._id);
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-      </div>
-    </main>
+    <button type="submit">
+      {editingId === null ? "Create note" : "Update note"}
+    </button>
+  </form>
+
+  <div className="notes">
+    {isloading
+      ? "Loading notes..."
+      : notes.map((note) => {
+          return (
+            <div key={note._id} className="note">
+              <h2>{note.title}</h2>
+              <p>{note.desc}</p>
+
+              <div className="btns">
+                <button
+                  type="button"
+                  onClick={() => {
+                    updateNoteHandler(note);
+                  }}
+                >
+                  Edit
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    deleteNoteHandler(note._id);
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          );
+        })}
+  </div>
+</main>
   );
 }
 
