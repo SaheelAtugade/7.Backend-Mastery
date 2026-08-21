@@ -60,8 +60,7 @@ app.patch('/api/notes/:id',async(req, res)=>{
     res.status(200).json({
         message: "Note updated successfully..."
     })
-})
-console.log(__dirname);
+});
 
 //wildcard route = handle all other api's tha rae not created on backned and send the index file to show frontend
 app.use('*name', (req, res)=>{

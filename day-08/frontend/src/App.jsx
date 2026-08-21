@@ -13,7 +13,13 @@ function App() {
       const res = await axios.get("http://localhost:3000/api/notes");
       setNotes(res.data.notes);
     } catch (err) {
-      console.log("Server error");
+      if (err.response) {
+        console.log("server error",err.response.status);
+      }else if(err.request){
+        console.log("Network error");
+      }else{
+        console.log("Somthing went wrong");
+      }
     } finally {
       setIsloading(false);
     }
