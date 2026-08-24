@@ -41,4 +41,9 @@ authRoute.post('/register', async(req, res)=>{
     })
 })
 
+authRoute.post('/protected',(req, res)=>{
+    console.log(req.cookies);
+    
+})
+
 module.exports = authRoute;
