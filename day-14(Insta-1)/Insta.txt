@@ -1,0 +1,17 @@
+*** Features ***
+
+==> Authentication
+-- Register
+-- Login
+-- Logout (Token blacklisting)
+
+==> POST
+-- Create
+-- Feed
+-- Like (types of collection)
+-- Save
+
+==> User
+-- Follow
+-- Following
+-- Followers
