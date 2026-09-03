@@ -3,7 +3,7 @@ const config = require("../config/config");
 
 
 //function to get user from token
-async function identifyUser(req, res, next) {
+async function authUser(req, res, next) {
   const token = req.cookies.jwt_token;
   if (!token) {
     return res.status(401).json({
@@ -24,4 +24,4 @@ async function identifyUser(req, res, next) {
   next() //after user identified moves to controller
 }
 
-module.exports = identifyUser
+module.exports = authUser
