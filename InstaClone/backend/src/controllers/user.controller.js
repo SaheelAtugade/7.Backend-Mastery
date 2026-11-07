@@ -32,11 +32,11 @@ async function followUserController(req, res) {
 
     const followRecord = await followModel.create({
         follower: followerUsername,
-        followee: followeeUsername
+        followee: followeeUsername,
     })
 
     res.status(201).json({
-        message: `you are now following ${followeeUsername}`,
+        message: `follow request sent to ${followeeUsername}`,
         followRecord
     })
 }
@@ -115,15 +115,10 @@ async function rejectRequestController(req, res) {
     const followerUsername = req.params.username
     const followeeUsername = req.user.username
 
-    const followRecord = await followModel.findOneAndUpdate({
+    const followRecord = await followModel.findOneAndDelete({
         follower: followerUsername,
         followee: followeeUsername,
         status: "pending"
-    },{
-        status: "rejected"
-    },{
-        new: true,
-        runValidators: true
     })
 
     if(!followRecord){
@@ -132,11 +127,46 @@ async function rejectRequestController(req, res) {
         })
     }
 
-
-
     res.status(200).json({
         message: `you rejected request by ${followRecord.follower}`,
         followRecord
+    })
+}
+
+async function getFollowersController(req, res){
+    const followers = await followModel.find({
+        followee: req.user.username,
+        status: "accepted"
+    })
+
+    if (followers.length === 0) {
+        return res.status(200).json({
+            message:"You dont have any followers yet"
+        })
+    }
+
+    res.status(200).json({
+        message: "Followers fetched successfully",
+        followerCount: followers.length,
+        followers
+    })
+}
+
+async function getFollowingController(req, res){
+    const following = await followModel.find({
+        follower: req.user.username,
+        status: "accepted"
+    })
+
+    if (following.length === 0) {
+        return res.status(200).json({
+            message:"You do not followed anyone yet"
+        })
+    }
+
+    res.status(200).json({
+        message: "Following fetched successfully",
+        following
     })
 }
 
@@ -145,5 +175,7 @@ module.exports = {
     unfollowUserController,
     followRequestsController,
     acceptRequestController,
-    rejectRequestController
+    rejectRequestController,
+    getFollowersController,
+    getFollowingController
 }

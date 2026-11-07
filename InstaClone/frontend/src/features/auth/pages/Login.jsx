@@ -1,65 +1,54 @@
 import React, { useState } from "react";
-import {Link} from "react-router-dom"
 import "../style/form.scss";
-import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 const Login = () => {
-const [username, setUsername] = useState("")
-const [password, setPassword] = useState("")
+  const { handleLogin, loading } = useAuth();
+  const navigate = useNavigate();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:3000/api/auth/login",
-        {
-          username,
-          password
-        },
-        {
-          withCredentials: true
-        }
-      );
-      console.log(response.data);
-    } catch (err) {
-      console.log(err.response.data.message);
-    }
-
-    setUsername("");
-    setPassword("");
+      await handleLogin(username, password);
+      navigate("/");
+    } catch (error) {}
   };
 
   return (
-    <main>
-      
+    <div className="page">
       <div className="form-container">
-        <h2>Login to account</h2>
-        <form onSubmit={(e)=>{handleSubmit(e)}}>
+        <h1>Login to account</h1>
+        <form onSubmit={handleSubmit}>
           <input
             type="text"
             name="username"
             id="username"
             placeholder="Enter username"
-            value={username}
-            onChange={(e)=>setUsername(e.target.value)}
+            onInput={(e) => setUsername(e.target.value)}
           />
           <input
             type="text"
             name="password"
             id="password"
             placeholder="Enter password"
-            value={password}
-            onChange={(e)=>setPassword(e.target.value)}
+            onInput={(e) => setPassword(e.target.value)}
           />
-          <button type="submit">Login</button>
+          <button
+            disabled={loading}
+            className="button primary-button"
+            type="submit"
+          >
+            {loading ? "loading..." : "Login"}
+          </button>
         </form>
-        <div className="form-links">
-          <p>
-            New here? <Link className='toggleAuthForm' to="/register">Create new account</Link>
-          </p>
-        </div>
+        <p>
+          Don't have an account? <Link to="/register">create an account</Link>
+        </p>
       </div>
-    </main>
+    </div>
   );
 };
 

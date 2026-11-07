@@ -1,84 +1,58 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 const Register = () => {
+  const { handleRegister, loading } = useAuth();
+  const navigate = useNavigate();
+
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await axios.post(
-        "http://localhost:3000/api/auth/register",
-        {
-          username,
-          email,
-          password
-        },
-        {
-          withCredentials: true
-        }
-      );
-      console.log(response.data);
-    } catch (err) {
-      console.log(err);
-    }
-
-    setUsername("");
-    setEmail("");
-    setPassword("");
+      await handleRegister(username, email, password);
+      navigate("/");
+    } catch (error) {}
   };
 
   return (
-    <main>
+    <div className="page">
       <div className="form-container">
-        <h2>Create new account</h2>
-        <form onSubmit={(e) => handleSubmit(e)}>
+        <h1>Create an account</h1>
+        <form onSubmit={handleSubmit}>
           <input
             type="text"
             name="username"
             id="username"
             placeholder="Enter username"
-            value={username}
-            onChange={(e) => {
-              setUsername(e.target.value);
-            }}
+            onInput={(e) => setUsername(e.target.value)}
           />
           <input
-            type="email"
+            type="text"
             name="email"
             id="email"
             placeholder="Enter email"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
+            onInput={(e) => setEmail(e.target.value)}
           />
           <input
             type="text"
             name="password"
             id="password"
             placeholder="Enter password"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
+            onInput={(e) => setPassword(e.target.value)}
           />
-          <button type="submit">Register</button>
+          <button className="button primary-button" type="submit">
+            Register
+          </button>
         </form>
-        <div className="form-links">
-          <p>
-            Already have an account?{" "}
-            <Link className="toggleAuthForm" to="/login">
-              Login
-            </Link>
-          </p>
-        </div>
+        <p>
+          Already have an account? <Link to="/login">login</Link>
+        </p>
       </div>
-    </main>
+    </div>
   );
 };
 

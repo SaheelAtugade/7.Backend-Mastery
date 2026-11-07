@@ -21,5 +21,18 @@ userRouter.post('/follow/accept/:username', authUser, userControllers.acceptRequ
 //-- reject request using username
 userRouter.post('/follow/reject/:username', authUser, userControllers.rejectRequestController)
 
+/**
+ * @route   GET = api/users/followers
+ * @desc    get followers of the user
+ * @access  private
+ */
+userRouter.get('/followers', authUser, userControllers.getFollowersController)
+
+/**
+ * @route   GET = api/users/following
+ * @desc    get followings of the user
+ * @access  private
+ */
+userRouter.get('/following', authUser, userControllers.getFollowingController)
 
 module.exports = userRouter
